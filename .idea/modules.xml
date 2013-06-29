@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ChanReader/ChanReader.iml" filepath="$PROJECT_DIR$/ChanReader/ChanReader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ChanReaderProject.iml" filepath="$PROJECT_DIR$/ChanReaderProject.iml" />
+    </modules>
+  </component>
+</project>
+
