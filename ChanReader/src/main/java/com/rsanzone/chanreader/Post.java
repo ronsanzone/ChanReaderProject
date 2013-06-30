@@ -61,4 +61,63 @@ public class Post {
         this.imageName = response.optString("filename");
         this.imageExtension = response.optString("ext");
     }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public long getNo() {
+        return no;
+    }
+
+    public Calendar getTime() {
+        return time;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTripcode() {
+        return tripcode;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCapcode() {
+        return capcode;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public long getImageId() {
+        return imageId;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public String getImageExtension() {
+        return imageExtension;
+    }
+    public String getUrl() {
+        return "http://images.4chan.org/x/src/" + getImageId() + getImageExtension();
+    }
 }

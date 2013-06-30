@@ -27,8 +27,8 @@ import org.json.JSONObject;
  */
 public class ThreadViewActivity extends Activity {
     private final String TAG = getClass().getSimpleName();
-
-    private Thread thread;
+    private Board board;
+    private DetailThread detailThread;
     private ListView listView;
     private ProgressDialog progress;
     public ImageLoader imageHolder;
@@ -41,7 +41,6 @@ public class ThreadViewActivity extends Activity {
 
         Bundle recdData = getIntent().getExtras();
         String threadNum = Integer.toString(recdData.getInt("com.rsanzone.data"));
-        Thread thread;
         String url = "http://api.4chan.org/x/res/"+threadNum+".json";
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
         ImageLoader mImageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache());
@@ -50,7 +49,7 @@ public class ThreadViewActivity extends Activity {
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                parseJSONResponse(response);
+                detailThread = new DetailThread(board, response);
                 populateHead();
                 progress.dismiss();
             }
@@ -65,31 +64,16 @@ public class ThreadViewActivity extends Activity {
         mRequestQueue.add(jr);
 
     }
-    private void parseJSONResponse(JSONObject response) {
-        try {
 
-
-                JSONArray posts = response.getJSONArray("posts");
-                JSONObject firstPost = posts.getJSONObject(0);
-                int no = firstPost.getInt("no");
-                String com = firstPost.getString("com");
-                String url = "http://images.4chan.org/x/src/" + Long.toString(firstPost.getLong("tim")) + firstPost.getString("ext");
-                thread = new Thread(no, com, url);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
     private void populateHead()
     {
         TextView txtNo = (TextView) findViewById(R.id.txtNo);
         TextView txtCom = (TextView) findViewById(R.id.txtCom);
         NetworkImageView imgView = (NetworkImageView) findViewById(R.id.thread_detail_image);
 
-        txtNo.setText(Integer.toString(thread.getNo()));
-        txtCom.setText(Html.fromHtml(thread.getCom()));
-        imgView.setImageUrl(thread.getUrl(), imageHolder);
+        txtNo.setText(Long.toString(detailThread.getOpPost().getNo()));
+        txtCom.setText(Html.fromHtml(detailThread.getOpPost().getComment()));
+        imgView.setImageUrl(detailThread.getOpPost().getUrl(), imageHolder);
     }
 
     @Override

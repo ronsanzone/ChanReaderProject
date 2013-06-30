@@ -28,4 +28,8 @@ public class Board {
     public String getPath() {
         return this.path;
     }
+
+    public String getDiscr() {
+        return this.discr;
+    }
 }
