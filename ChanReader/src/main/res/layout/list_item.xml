@@ -12,6 +12,7 @@
             android:layout_marginBottom="4dp">
 
         <TextView
+                android:id="@+id/commandText"
                 android:layout_gravity="left|center_vertical"
                 android:layout_width="fill_parent"
                 android:layout_weight="1"

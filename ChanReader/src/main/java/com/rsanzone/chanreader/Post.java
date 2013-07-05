@@ -54,10 +54,10 @@ public class Post {
         this.tripcode = response.optString("trip");
         this.email = response.optString("email");
         this.capcode = response.optString("capcode");
-        this.countryCode = response.optString("countryCode");
+        this.countryCode = response.optString("country");
         this.countryName = response.optString("country_name");
-        this.comment = response.optString("comment");
-        this.imageId = response.optLong("imageId");
+        this.comment = response.optString("com");
+        this.imageId = response.optLong("tim");
         this.imageName = response.optString("filename");
         this.imageExtension = response.optString("ext");
     }

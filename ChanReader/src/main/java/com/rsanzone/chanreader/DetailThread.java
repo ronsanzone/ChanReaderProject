@@ -14,6 +14,7 @@ public class DetailThread extends Thread {
 
     public DetailThread(Board board, JSONObject response) {
         super(board, response);
+        this.posts = new ArrayList<Post>();
         populatePosts(response);
     }
 
@@ -24,5 +25,9 @@ public class DetailThread extends Thread {
                 posts.add(new Post(board, postArray.getJSONObject(count)));
             }
         } catch (JSONException e) { e.printStackTrace(); }
+    }
+
+    public ArrayList<Post> getPosts() {
+        return this.posts;
     }
 }

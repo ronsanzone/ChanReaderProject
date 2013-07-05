@@ -1,5 +1,7 @@
 package com.rsanzone.chanreader;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -18,7 +20,11 @@ public class Thread {
     }
 
     public void populateOpPost(JSONObject response) {
-        this.opPost = new OpPost(board, response);
+        try {
+            JSONArray posts = response.getJSONArray("posts");
+            JSONObject post = posts.getJSONObject(0);
+            this.opPost = new OpPost(board, post);
+        } catch(JSONException e) { e.printStackTrace(); }
     }
 
     public Post getOpPost() {

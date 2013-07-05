@@ -59,9 +59,9 @@ public class ThreadAdapter extends BaseAdapter {
         NetworkImageView imgView = (NetworkImageView) convertView.findViewById(R.id.thread_image);
        // TextView txtUrl = (TextView) convertView.findViewById(R.id.txtUrl);
 
-        txtNo.setText(Integer.toString(aThread.getNo()));
-        txtCom.setText(Html.fromHtml(aThread.getCom()));
-        imgView.setImageUrl(aThread.getUrl(), mImageLoader);
+        txtNo.setText(Long.toString(aThread.getOpPost().getNo()));
+        txtCom.setText(Html.fromHtml(aThread.getOpPost().getComment()));
+        imgView.setImageUrl(aThread.getOpPost().getUrl(), mImageLoader);
 
         //txtUrl.setText(aThread.getUrl());
 

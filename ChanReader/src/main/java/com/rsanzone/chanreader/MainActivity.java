@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
     private final String TAG = getClass().getSimpleName();
     private ArrayList<Thread> threadList;
+    private  Board board;
     private ListView listView;
     private ThreadAdapter ta;
     private ProgressDialog progress;
@@ -40,6 +41,7 @@ public class MainActivity extends Activity {
         ImageLoader mImageLoader = new ImageLoader(reqQueue, new BitmapLruCache());
 
         threadList = new ArrayList<Thread>();
+        board = new Board();
         listView = (ListView) findViewById(R.id.listView);
         ta = new ThreadAdapter(this, mImageLoader , R.layout.thread_item, threadList);
 
@@ -48,7 +50,7 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent showThread = new Intent(view.getContext(), ThreadViewActivity.class);
-                showThread.putExtra("com.rsanzone.data", threadList.get(position).getNo());
+                showThread.putExtra("com.rsanzone.data", threadList.get(position).getOpPost().getNo());
                 startActivity(showThread);
             }
         });
@@ -80,12 +82,7 @@ public class MainActivity extends Activity {
             for(int count = 0; count < threads.length(); count++)
             {
                 JSONObject aThread = threads.getJSONObject(count);
-                JSONArray posts = aThread.getJSONArray("posts");
-                JSONObject firstPost = posts.getJSONObject(0);
-                int no = firstPost.getInt("no");
-                String com = firstPost.getString("com");
-                String url = "http://thumbs.4chan.org/x/thumb/" + Long.toString(firstPost.getLong("tim")) + "s.jpg";
-                Thread thread = new Thread(no, com, url);
+                Thread thread = new Thread(board, aThread);
                 threadList.add(thread);
             }
         } catch (JSONException e) {

@@ -1,57 +1,75 @@
 package com.rsanzone.chanreader;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 
 /**
  * Created by thunaer on 6/28/13.
  */
-public class ThreadDetailAdapter extends BaseAdapter {
-    private ArrayList<Thread> postList;
-    private int layout;
+public class ThreadDetailAdapter extends ArrayAdapter<Post> {
+
     private Context context;
-    private ImageLoader mImageLoader;
+    private ArrayList<Post> posts;
+    private Typeface typeface;
+    private static Hashtable fontCache = new Hashtable();
+    private LayoutInflater inflater;
 
-    public ThreadDetailAdapter(Context context, ImageLoader imageLoader, int layout, ArrayList<Thread> postList) {
+    public class CustomListItem {
+        TextView descText;
+    }
+
+    public ThreadDetailAdapter(Context context, int resource, ArrayList<Post> postsList) {
+        super(context, R.layout.list_item, postsList);
         this.context = context.getApplicationContext();
-        this.postList = postList;
-        this.layout = layout;
-        this.mImageLoader = imageLoader;
+        posts = new ArrayList<Post>();
+        posts.addAll(postsList);
+        //typeface = getTypeface(this.context, "fonts/Roboto-Light.ttf");
+        inflater = LayoutInflater.from(this.context);
     }
 
-    @Override
-    public int getCount() {
-        return postList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return 0;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
+    static Typeface getTypeface(Context context, String font) {
+        Typeface typeface = (Typeface) fontCache.get(font);
+        if(typeface == null) {
+            typeface = Typeface.createFromAsset(context.getAssets(), font);
+            fontCache.put(font, typeface);
+        }
+        return typeface;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        CustomListItem mListItem;
+
+        Post mPost = getItem(position);
+
         if(convertView == null) {
-            convertView = ((LayoutInflater) context
-                            .getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-                            .inflate(layout, null);
+            convertView = inflater.inflate(R.layout.list_item, parent, false);
 
+            mListItem = new CustomListItem();
+
+            mListItem.descText = (TextView) convertView.findViewById(R.id.commandText);
+            //mListItem.descText.setTypeface(typeface);
+
+            convertView.setTag(mListItem);
+        } else {
+            mListItem = (CustomListItem) convertView.getTag();
         }
-        //TODO finish implementing the post listview adapter
-        return null;
-    }
 
+        mListItem.descText.setText(Long.toString(mPost.getNo()));
+
+        return convertView;
+    }
 
 }
