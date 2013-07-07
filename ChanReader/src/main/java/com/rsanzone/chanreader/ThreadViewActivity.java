@@ -1,6 +1,7 @@
 package com.rsanzone.chanreader;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Html;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * Created by thunaer on 6/28/13.
  */
-public class ThreadViewActivity extends Activity {
+public class ThreadViewActivity extends ListActivity {
     private final String TAG = getClass().getSimpleName();
     private Board board;
     private ArrayList<Post> postList;
@@ -43,16 +44,17 @@ public class ThreadViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thread);
+        //setContentView(R.layout.activity_thread);
 
         Bundle recdData = getIntent().getExtras();
         String threadNum = Long.toString(recdData.getLong("com.rsanzone.data"));
         String url = "http://api.4chan.org/x/res/"+threadNum+".json";
-        postList = new ArrayList<Post>();
-        listView = (ListView) findViewById(R.id.postListView);
-        mDetailAdapter = new ThreadDetailAdapter(this, R.layout.list_item, postList);
-        listView.setAdapter(mDetailAdapter);
 
+        postList = new ArrayList<Post>();
+        //listView = (ListView) findViewById(R.id.postListView);
+        mDetailAdapter = new ThreadDetailAdapter(this, R.layout.list_item, postList);
+        //listView.setAdapter(mDetailAdapter);
+        setListAdapter(mDetailAdapter);
         RequestQueue mRequestQueue = Volley.newRequestQueue(this);
         ImageLoader mImageLoader = new ImageLoader(mRequestQueue, new BitmapLruCache());
         this.imageHolder = mImageLoader;
@@ -61,10 +63,11 @@ public class ThreadViewActivity extends Activity {
             @Override
             public void onResponse(JSONObject response) {
                 detailThread = new DetailThread(board, response);
-                //postList = detailThread.getPosts();
+                postList.addAll(detailThread.getPosts());
                 populateHead();
-                mDetailAdapter.addAll(detailThread.getPosts());
+               // mDetailAdapter.addAll(detailThread.getPosts());
                 mDetailAdapter.notifyDataSetChanged();
+
                 progress.dismiss();
             }
         }, new Response.ErrorListener() {
